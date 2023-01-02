@@ -7,10 +7,10 @@
 #include <stdio.h>
 using namespace std;
 
-// Creating shortcut for an integer pair
+
 typedef pair<int, int> iPair;
   
-// Structure to represent a graph
+
 class Graph
 {
     
@@ -18,14 +18,13 @@ class Graph
     list<int> *adj; 
     vector< pair<int, iPair> > edges;
 
-    // Constructor
+  
 public:
     Graph(int V,int E);
     void addEdge(int u, int v, int w);
-    vector<int> BFS(int s); //s de sauce
+    vector<int> BFS(int s); 
     vector<vector<vector<int>>> conectedGraph(vector<vector<int>> dados);
-        // Function to find MST using Kruskal's
-    // MST algorithm
+    
     int kruskalMST();
     int finalfunction(vector<vector<int>> dados);
 
@@ -39,35 +38,32 @@ Graph::Graph(int V, int E)
 }
 void Graph::addEdge(int u, int v, int w)
     {
-        adj[u].push_back(v); // Add w to v’s list.
-        adj[v].push_back(u); // Add w to v’s list.
+        adj[u].push_back(v); 
+        adj[v].push_back(u); 
         edges.push_back({w, {u, v}});
     }
 
 
 vector<int> Graph::BFS(int s)
 {
-    // Mark all the vertices as not visited
+
     vector<bool> visited;
     visited.resize(V, false);
  
-    // Create a queue for BFS
+   
     list<int> queue;
  
-    // Mark the current node as visited and enqueue it
+
     visited[s] = true;
     queue.push_back(s);
     vector<int> lista;
     while (!queue.empty()) {
-        // Dequeue a vertex from queue and print it
+     
         s = queue.front();
-        // cout << s << " ";
+       
         lista.push_back(s);
         queue.pop_front();
  
-        // Get all adjacent vertices of the dequeued
-        // vertex s. If a adjacent has not been visited,
-        // then mark it visited and enqueue it
         for (auto adjecent : adj[s]) {
             if (!visited[adjecent]) {
                 visited[adjecent] = true;
@@ -123,46 +119,40 @@ struct DisjointSets
     int *parent, *rnk;
     int n;
   
-    // Constructor.
+
     DisjointSets(int n)
     {
-        // Allocate memory
+       
         this->n = n;
         parent = new int[n+1];
         rnk = new int[n+1];
   
-        // Initially, all vertices are in
-        // different sets and have rank 0.
+   
         for (int i = 0; i <= n; i++)
         {
             rnk[i] = 0;
   
-            //every element is parent of itself
             parent[i] = i;
         }
     }
   
-    // Find the parent of a node 'u'
-    // Path Compression
+
     int find(int u)
     {
-        /* Make the parent of the nodes in the path
-        from u--> parent[u] point to parent[u] */
+
         if (u != parent[u])
             parent[u] = find(parent[u]);
         return parent[u];
     }
   
-    // Union by rank
+    
     void merge(int x, int y)
     {
         x = find(x), y = find(y);
   
-        /* Make tree with smaller height
-        a subtree of the other tree */
         if (rnk[x] > rnk[y])
             parent[y] = x;
-        else // If rnk[x] <= rnk[y]
+        else 
             parent[x] = y;
   
         if (rnk[x] == rnk[y])
@@ -170,19 +160,19 @@ struct DisjointSets
     }
 };
   
-/* Functions returns weight of the MST*/
+
   
 int Graph::kruskalMST()
 {
-    int mst_wt = 0; // Initialize result
+    int mst_wt = 0;
   
-    // Sort edges in increasing order on basis of cost
+
     sort(edges.rbegin(), edges.rend());
   
-    // Create disjoint sets
+ 
     DisjointSets ds(V);
   
-    // Iterate through all sorted edges
+
     vector< pair<int, iPair> >::iterator it;
     for (it=edges.begin(); it!=edges.end(); it++)
     {
@@ -191,18 +181,10 @@ int Graph::kruskalMST()
   
         int set_u = ds.find(u);
         int set_v = ds.find(v);
-  
-        // Check if the selected edge is creating
-        // a cycle or not (Cycle is created if u
-        // and v belong to same set)
+
         if (set_u != set_v)
         {
-            // Current edge will be in the MST
-            // so print it
 
-            // cout << u << " - " << v << endl;
-  
-            // Update MST weight
             mst_wt += it->first;
   
             // Merge two sets
