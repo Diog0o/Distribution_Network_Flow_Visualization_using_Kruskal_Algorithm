@@ -7,10 +7,6 @@
 #include <stdio.h>
 using namespace std;
 
-
-
-
-
 // Creating shortcut for an integer pair
 typedef pair<int, int> iPair;
   
@@ -47,7 +43,6 @@ void Graph::addEdge(int u, int v, int w)
         adj[v].push_back(u); // Add w to v’s list.
         edges.push_back({w, {u, v}});
     }
-  
 
 
 vector<int> Graph::BFS(int s)
